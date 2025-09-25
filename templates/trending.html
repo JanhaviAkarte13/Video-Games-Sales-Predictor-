@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Games - Video Game Sales Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark purple/blue background */
+            color: #e0e0e0;
+        }
+        .card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+        th {
+            font-weight: 600;
+            color: #c4b5fd;
+            border-bottom: 2px solid #8b5cf6;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(59, 60, 94, 0.5);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-[#2b2c4c] p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Video Game Sales Predictor</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="nav-link">Predict Sales</a>
+                <a href="{{ url_for('trending') }}" class="nav-link text-purple-400">Trending Games</a>
+                <a href="{{ url_for('logout') }}" class="nav-link text-red-400">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-8 flex-grow">
+        <h2 class="text-4xl font-bold mb-6 text-purple-400">Top 100 Trending Games</h2>
+        
+        {% if error %}
+            <div class="bg-red-900 text-red-300 p-4 rounded-lg">
+                <p>{{ error }}</p>
+            </div>
+        {% else %}
+            <div class="card p-6 overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Platform</th>
+                            <th>Genre</th>
+                            <th>Publisher</th>
+                            <th>Global Sales (M)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in games %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ game.Name }}</td>
+                            <td>{{ game.Platform }}</td>
+                            <td>{{ game.Genre }}</td>
+                            <td>{{ game.Publisher }}</td>
+                            <td>{{ "%.2f"|format(game.Global_Sales) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Video Game Sales Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark purple/blue background */
+            color: #e0e0e0;
+        }
+        .container-card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 28rem;
+        }
+        .input-field {
+            background-color: #3b3c5e;
+            border: 1px solid #4a4b6c;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            color: #e0e0e0;
+            transition: border-color 0.3s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+        .btn-login {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn-login:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="container-card p-10 flex flex-col items-center">
+        <h2 class="text-3xl font-bold mb-6 text-purple-400">Login</h2>
+        <form method="post" action="{{ url_for('login') }}" class="w-full space-y-6">
+            <div>
+                <input type="text" name="username" placeholder="Username" class="input-field" required>
+            </div>
+            <div>
+                <input type="password" name="password" placeholder="Password" class="input-field" required>
+            </div>
+            {% if error %}
+            <p class="text-red-400 text-center text-sm">{{ error }}</p>
+            {% endif %}
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+    </div>
+</body>
+</html>
+

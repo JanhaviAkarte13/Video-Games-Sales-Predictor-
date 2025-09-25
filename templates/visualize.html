@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+        .card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 20rem; /* Fixed height for the charts */
+            width: 100%;
+        }
+        .btn-predict {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-predict:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-[#2b2c4c] p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Video Game Sales Predictor</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="nav-link">Predict Sales</a>
+                <a href="{{ url_for('trending') }}" class="nav-link">Trending Games</a>
+                <a href="{{ url_for('logout') }}" class="nav-link text-red-400">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-8 flex-grow">
+        <h2 class="text-4xl font-bold mb-4 text-purple-400">Sales Visualization</h2>
+        <p class="text-xl mb-8 text-gray-300">Explore key trends and data from the video game sales dataset.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Growth of Video Game Sales Over the Years -->
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4">Global Sales Over the Years</h3>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Selling Genres -->
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4">Top Selling Genres</h3>
+                <div class="chart-container">
+                    <canvas id="genreChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Platform Popularity -->
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4">Platform Popularity</h3>
+                <div class="chart-container">
+                    <canvas id="platformChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Games per Year -->
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4">Top Games per Year</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left table-auto">
+                        <thead>
+                            <tr class="bg-purple-900 text-purple-200">
+                                <th class="py-2 px-4 rounded-tl-lg">Year</th>
+                                <th class="py-2 px-4">Game Name</th>
+                                <th class="py-2 px-4 rounded-tr-lg">Global Sales (Millions)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in top_games_data %}
+                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                                <td class="py-2 px-4">{{ game.Year }}</td>
+                                <td class="py-2 px-4">{{ game.Name }}</td>
+                                <td class="py-2 px-4">{{ "%.2f"|format(game.Global_Sales) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script tags to hold the JSON data -->
+    <script id="chart-data" type="application/json">
+        {
+            "sales_data": {{ sales_data | tojson }},
+            "genre_data": {{ genre_data | tojson }},
+            "platform_data": {{ platform_data | tojson }}
+        }
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartData = JSON.parse(document.getElementById('chart-data').textContent);
+            const salesData = chartData.sales_data;
+            const genreData = chartData.genre_data;
+            const platformData = chartData.platform_data;
+
+            // Global Chart Defaults
+            Chart.defaults.font.family = 'Inter, sans-serif';
+            Chart.defaults.color = '#e0e0e0';
+            Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+            // Helper function to truncate labels
+            function truncateLabel(label, maxLength) {
+                if (label && label.length > maxLength) {
+                    return label.substring(0, maxLength) + '...';
+                }
+                return label;
+            }
+
+            // Growth of Video Game Sales Over the Years
+            new Chart(document.getElementById('salesChart'), {
+                type: 'line',
+                data: salesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { 
+                                color: '#e0e0e0',
+                                font: { size: 12 },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { 
+                                color: '#e0e0e0',
+                                font: { size: 12 } 
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e0e0e0' } }
+                    }
+                }
+            });
+
+            // Top Selling Genres
+            new Chart(document.getElementById('genreChart'), {
+                type: 'bar',
+                data: {
+                    labels: genreData.labels,
+                    datasets: genreData.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: {
+                                color: '#e0e0e0',
+                                font: { size: 12 },
+                                callback: function(value, index, values) {
+                                    return truncateLabel(this.getLabelForValue(value), 10);
+                                }
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e0e0e0', font: { size: 12 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e0e0e0' } }
+                    }
+                }
+            });
+
+            // Platform Popularity
+            new Chart(document.getElementById('platformChart'), {
+                type: 'bar',
+                data: {
+                    labels: platformData.labels,
+                    datasets: platformData.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e0e0e0', font: { size: 12 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: {
+                                color: '#e0e0e0',
+                                font: { size: 12 },
+                                callback: function(value, index, values) {
+                                    return truncateLabel(this.getLabelForValue(value), 10);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e0e0e0' } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

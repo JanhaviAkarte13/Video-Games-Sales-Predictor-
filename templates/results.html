@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results - Video Game Sales Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark purple/blue background */
+            color: #e0e0e0;
+        }
+        .card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 42rem;
+        }
+        .btn-back {
+            background-color: #a78bfa;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #8b5cf6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.4);
+        }
+        .results-table th, .results-table td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .results-table th {
+            color: #c4b5fd;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-[#2b2c4c] p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Video Game Sales Predictor</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="nav-link text-purple-400">Predict Sales</a>
+                <a href="{{ url_for('trending') }}" class="nav-link">Trending Games</a>
+                <a href="{{ url_for('logout') }}" class="nav-link text-red-400">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-8 flex-grow flex items-center justify-center">
+        <div class="card p-10 w-full text-center">
+            <h2 class="text-3xl font-bold mb-6 text-purple-400">Prediction Results</h2>
+            <h3 class="text-xl font-semibold mb-4 text-purple-300">{{ game_name }}</h3>
+            <p class="mb-6 text-gray-300">Here are the predicted global sales for your selected game.</p>
+            
+            <div class="bg-[#3b3c5e] rounded-xl p-6 mb-8">
+                <table class="w-full results-table">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Actual Global Sales</td>
+                            <td>{{ actual_sales }} million</td>
+                        </tr>
+                        <tr>
+                            <td>Linear Regression Prediction</td>
+                            <td>{{ predictions.linear_regression }} million</td>
+                        </tr>
+                        <tr>
+                            <td>Random Forest Prediction</td>
+                            <td>{{ predictions.random_forest }} million</td>
+                        </tr>
+                        <tr class="border-t border-gray-700">
+                            <td>Platform</td>
+                            <td>{{ platform }}</td>
+                        </tr>
+                        <tr>
+                            <td>Genre</td>
+                            <td>{{ genre }}</td>
+                        </tr>
+                        <tr>
+                            <td>Publisher</td>
+                            <td>{{ publisher }}</td>
+                        </tr>
+                        <tr>
+                            <td>Release Year</td>
+                            <td>{{ year }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="{{ url_for('predict') }}" class="btn-back">Predict Another Game</a>
+        </div>
+    </main>
+</body>
+</html>

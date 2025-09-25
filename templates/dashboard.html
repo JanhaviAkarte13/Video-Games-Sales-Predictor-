@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Video Game Sales Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark purple/blue background */
+            color: #e0e0e0;
+        }
+        .card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-predict {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-predict:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-[#2b2c4c] p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Video Game Sales Predictor</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="nav-link text-purple-400">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="nav-link">Predict Sales</a>
+                <a href="{{ url_for('trending') }}" class="nav-link">Trending Games</a>
+                <a href="{{ url_for('logout') }}" class="nav-link text-red-400">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-8 flex-grow">
+        <h2 class="text-4xl font-bold mb-4 text-purple-400">Hi {{ username }}!</h2>
+        <p class="text-xl mb-8 text-gray-300">Welcome to your video game sales dashboard.</p>
+
+        <!-- Main Cards Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Predict Card -->
+            <div class="card p-8 flex flex-col justify-between">
+                <h3 class="text-2xl font-semibold text-purple-300 mb-2">Predict Sales</h3>
+                <p class="text-gray-400 mb-6">Enter game details to get a sales prediction from our models.</p>
+                <a href="{{ url_for('predict') }}" class="btn-predict text-center block">Predict Now</a>
+            </div>
+
+            <!-- Trending Card -->
+            <div class="card p-8 flex flex-col justify-between">
+                <h3 class="text-2xl font-semibold text-purple-300 mb-2">Trending Games</h3>
+                <p class="text-gray-400 mb-6">Discover the top-selling games globally in recent years.</p>
+                <a href="{{ url_for('trending') }}" class="btn-predict text-center block">View Trending</a>
+            </div>
+
+            <!-- Visualization Card -->
+            <div class="card p-8 flex flex-col justify-between">
+                <h3 class="text-2xl font-semibold text-purple-300 mb-2">Sales Visualization</h3>
+                <p class="text-gray-400 mb-6">See sales trends and model performance with interactive charts.</p>
+                <a href="{{ url_for('visualize') }}" class="btn-predict text-center block">View Charts</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

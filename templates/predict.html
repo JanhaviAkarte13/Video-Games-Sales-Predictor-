@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Sales - Video Game Sales Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark purple/blue background */
+            color: #e0e0e0;
+        }
+        .card {
+            background-color: rgba(43, 44, 76, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 42rem;
+        }
+        .select-field, .input-field {
+            background-color: #3b3c5e;
+            border: 1px solid #4a4b6c;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            color: #e0e0e0;
+            transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+        .select-field:focus, .input-field:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+        .btn-predict {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn-predict:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-[#2b2c4c] p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Video Game Sales Predictor</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="nav-link text-purple-400">Predict Sales</a>
+                <a href="{{ url_for('trending') }}" class="nav-link">Trending Games</a>
+                <a href="{{ url_for('logout') }}" class="nav-link text-red-400">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-8 flex-grow flex items-center justify-center">
+        <div class="card p-10 w-full">
+            <h2 class="text-3xl font-bold mb-6 text-purple-400">Predict Global Sales</h2>
+            <form method="post" action="{{ url_for('predict') }}" class="space-y-6">
+                <div>
+                    <label for="game_name" class="block text-gray-300 font-medium mb-2">Select a Game:</label>
+                    <select id="game_name" name="game_name" class="select-field" required>
+                        <option value="" disabled selected>-- Select a game --</option>
+                        {% for name in game_names %}
+                        <option value="{{ name }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% if error %}
+                <p class="text-red-400 text-sm mt-2">{{ error }}</p>
+                {% endif %}
+                <button type="submit" class="btn-predict mt-4">Predict Global Sales</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
