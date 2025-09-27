@@ -64,14 +64,16 @@ The system is deployed via a **Flask web interface**, where users can input game
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/JanhaviAkarte13/Video-Games-Sales-Predictor.git
-cd Video-Games-Sales-Predictor
+git clone https://github.com/your-username/your-repository-name.git
+cd your-repository-name
+```
 
-**### 2.Install Dependencies**
-```bash
-pip install -r requirements.txt
+2. **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-**### 3.Run the Application**
-```bash
-python app.py
-
+3. **Run the Application**
+    ```bash
+    python app.py
+    ```
