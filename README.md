@@ -62,7 +62,7 @@ The system is deployed via a **Flask web interface**, where users can input game
 
 ## ⚙️ Installation & Setup
 
-### 1. Clone the Repository
+1. **Clone the Repository**
 ```bash
 git clone https://github.com/your-username/your-repository-name.git
 cd your-repository-name
