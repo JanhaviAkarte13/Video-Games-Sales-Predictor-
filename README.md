@@ -52,4 +52,23 @@ The system is deployed via a **Flask web interface**, where users can input game
 ---
 
 ## ➡️ Project Workflow
+➡️ Data Preparation (Feature Engineering)
+➡️ Model Training (2 Models)
+➡️ Model Evaluation
+➡️ Deployment (Flask Web App)
 
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/JanhaviAkarte13/Video-Games-Sales-Predictor.git
+cd Video-Games-Sales-Predictor
+
+2. Install Dependencies
+
+(Recommended: use a virtual environment)
+
+pip install Flask pandas scikit-learn joblib numpy matplotlib seaborn
