@@ -67,8 +67,11 @@ The system is deployed via a **Flask web interface**, where users can input game
 git clone https://github.com/JanhaviAkarte13/Video-Games-Sales-Predictor.git
 cd Video-Games-Sales-Predictor
 
-2. Install Dependencies
+**### 2.Install Dependencies**
+```bash
+pip install -r requirements.txt
 
-(Recommended: use a virtual environment)
+**### 3.Run the Application**
+```bash
+python app.py
 
-pip install Flask pandas scikit-learn joblib numpy matplotlib seaborn
